@@ -15,15 +15,18 @@ public class Server {
         ServerSocket serverSocket=null;
         try {
             serverSocket= new ServerSocket(8081);//创建绑定端口8000的对象ServerSocket
+            BufferedReader br ;//创建带缓冲的字符读入流
+            PrintStream ps;//此输出流不会抛出异常
             System.out.println("服务器已经启动");
+            socket = serverSocket.accept();//接收客户端请求，得到Socket
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));//创建带缓冲的字符读入流
+            ps = new  PrintStream(socket.getOutputStream());//此输出流不会抛出异常
+
             while(true){
                 System.out.println("--------");
-                socket = serverSocket.accept();//接收客户端请求，得到Socket
-                System.out.println("有客户端连接过来了");
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));//创建带缓冲的字符读入流
+                   System.out.println("有客户端连接过来了");
                 String sr = br.readLine();//读取一个文本行
                 System.out.println(sr);
-                PrintStream ps = new  PrintStream(socket.getOutputStream());//此输出流不会抛出异常
                 ps.println(new StringBuffer(sr).reverse());//将反转后的字符串打印到客户端屏幕上
             }
 
